@@ -116,7 +116,7 @@ def generate_search_terms(query: str) -> GovernmentTerm:
         
         # Call the LLM to generate search terms
         response = groq_client.chat.completions.create(
-            model="llama-3.3-70b",
+            model="llama3-70b-8192",
             messages=[
                 {"role": "system", "content": "You are a helpful assistant that extracts relevant government search terms from user queries."},
                 {"role": "user", "content": prompt}
@@ -277,7 +277,7 @@ def generate_response(conversation_history: List[Dict[str, Any]], extracted_cont
         
         # Generate response using Groq's LLM
         response = groq_client.chat.completions.create(
-            model="llama-3.3-70b",
+            model="llama3-70b-8192",
             messages=messages,
             temperature=0.7,
             max_tokens=1000
