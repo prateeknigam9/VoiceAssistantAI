@@ -3,7 +3,7 @@ import logging
 import tempfile
 import uuid
 from datetime import datetime
-from flask import Flask, render_template, request, jsonify, session
+from flask import Flask, render_template, request, jsonify, session, send_file
 from dotenv import load_dotenv
 from groq import Groq
 from elevenlabs import ElevenLabs
@@ -154,7 +154,13 @@ def get_audio(filename):
     if not os.path.exists(full_path):
         return jsonify({"error": "File not found"}), 404
     
-    return send_file(full_path, mimetype='audio/wav')
+    # Check the file extension and set appropriate mimetype
+    if filename.endswith('.mp3'):
+        mimetype = 'audio/mp3'
+    else:
+        mimetype = 'audio/mpeg'  # More generic audio mimetype
+        
+    return send_file(full_path, mimetype=mimetype)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
