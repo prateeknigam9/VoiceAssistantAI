@@ -1,0 +1,3 @@
+Please create a sample text file that can be used to test the text-based agent. This file doesn't need to be an audio file since we're now using the text-based version of the agent.
+
+When you run the text_based_agent.py script, it will ask you to input a question directly, so you don't need to provide an audio file path.
