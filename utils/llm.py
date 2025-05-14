@@ -62,7 +62,7 @@ def generate_response(conversation_history: List[Dict[str, Any]], extracted_cont
         
         # Generate response using Groq's LLM
         response = client.chat.completions.create(
-            model="llama-3.3-70b",
+            model="llama3-70b-8192",
             messages=messages,
             temperature=0.7,
             max_tokens=1000
