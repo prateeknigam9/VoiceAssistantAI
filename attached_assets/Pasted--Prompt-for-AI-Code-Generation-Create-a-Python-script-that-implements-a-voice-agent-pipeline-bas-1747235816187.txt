@@ -1,0 +1,108 @@
+# Prompt for AI Code Generation
+
+Create a Python script that implements a voice agent pipeline based on the following specifications. The code must be easy to read, beginner-friendly, and use only Python with a terminal-based user interface. Use Groq for transcription and language models, and ElevenLabs for text-to-speech conversion. Follow the step-by-step tasks and integrate the provided functions.
+
+## Specifications
+
+### Step-by-Step Tasks to Build the Voice Agent
+
+1. **Receive Voice Input**
+   - Prompt the user to provide the path to an audio file containing their voice input.
+   - If the user enters 'quit', exit the program.
+   - Otherwise, read the audio file for processing.
+
+2. **Transcription**
+   - Transcribe the audio file to text using Groq's Whisper-large-v3 model.
+   - Use the provided `voice_to_text` function for this step.
+
+3. **Language Processing**
+   - Maintain a conversation history as a list of messages (e.g., `[{"role": "user", "content": transcribed_text}, {"role": "assistant", "content": response}, ...]`).
+   - Append the transcribed text as a user message to the conversation history.
+   - Generate an official government search term from the latest user message using the provided `generate_search_terms` function.
+   - Extract relevant content from the Irish government website (`https://www.gov.ie`) using the search term with the provided `extract_content_from_links` function.
+   - Generate a response using Groq's llama-3.3-70b model, considering the conversation history and the extracted content.
+   - Append the generated response as an assistant message to the conversation history.
+
+4. **Text-to-Speech Conversion**
+   - Convert the generated text response to speech using ElevenLabs with the voice model `eleven_flash_v2_5`.
+   - Use the provided `text_to_voice` function for this step.
+
+5. **Generate Voice Response**
+   - Save the generated audio to a file (e.g., `response.wav`).
+   - Inform the user of the location of the output audio file via the terminal.
+
+6. **Loop**
+   - Repeat the process, allowing the user to provide another audio file or quit.
+
+### Provided Functions
+
+Integrate the following functions into the script:
+
+- **`voice_to_text(file_name: str) -> str`**
+  - Transcribes the audio file to text using Groq's Whisper-large-v3 model.
+  - **Note**: Assume `client` is initialized as `groq_client` from `groq import Groq`.
+
+- **`text_to_voice(speech_file_path: str, text_to_convert: str) -> str`**
+  - Converts the text to speech using ElevenLabs and saves it to the specified file path.
+  - **Note**: Update this function to use `elevenlabs_client` from `elevenlabs import ElevenLabs` with the voice model `eleven_flash_v2_5`.
+
+- **`generate_search_terms(query: str) -> GovernmentTerm`**
+  - Generates an official government search term from the user's query using Groq's llama-3.3-70b model.
+
+- **`extract_content_from_links(query_word: str) -> str`**
+  - Extracts content from relevant links on the Irish government website based on the search term.
+
+### Requirements
+
+- **Language**: Use only Python.
+- **User Interface**: Terminal-based (prompt for audio file path, output response audio file location).
+- **Models**:
+  - Transcription: Groq's Whisper-large-v3
+  - Language Model: Groq's llama-3.3-70b
+  - Text-to-Speech: ElevenLabs with voice model `eleven_flash_v2_5`
+- **Conversational Memory**: Maintain a list of messages to retain conversation context across interactions.
+- **Error Handling**: Gracefully handle errors (e.g., invalid file paths, API errors).
+- **API Keys**: Assume API keys are set in environment variables (`GROQ_API_KEY` and `ELEVENLABS_API_KEY`).
+- **Dependencies**: Use only necessary Python libraries (e.g., `groq`, `elevenlabs`, `requests`, `beautifulsoup4`, `pydantic`, `langchain_groq`, `dotenv`).
+- **Execution**: Implement a loop allowing multiple user interactions until 'quit' is entered.
+
+### Additional Instructions
+
+- **Initialization**:
+  - Load environment variables using `dotenv`.
+  - Initialize `groq_client` and `elevenlabs_client` with their respective API keys.
+
+- **Conversation History**:
+  - Use a list to store messages with roles ("user" or "assistant") and content.
+  - Pass the entire conversation history to the language model when generating responses.
+
+- **Response Generation**:
+  - Construct a prompt for the language model that includes the conversation history and extracted content.
+  - Example prompt format: Based on the following conversation history and extracted content, provide a helpful response to the user's latest query.
+
+Conversation history:
+[List of messages]
+
+Extracted content:
+[Content from government website]
+
+Response:
+
+
+- **Text-to-Speech**:
+- Update the `text_to_voice` function to use `elevenlabs_client.generate()` with the specified voice model.
+- Save the audio output to a file (e.g., `response.wav`).
+
+- **User Interaction**:
+- In each iteration, prompt the user to enter the path to an audio file or 'quit'.
+- If the user enters 'quit', exit the loop and end the program.
+- Otherwise, process the audio file and generate the response audio.
+
+- **Code Structure**:
+- Include all necessary import statements.
+- Define the provided functions and any additional helper functions.
+- Implement the main logic in a clear, step-by-step manner with comments.
+
+### Notes
+
+- Do not use any other tools beyond Groq and ElevenLabs.
