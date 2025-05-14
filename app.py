@@ -115,7 +115,7 @@ def process_audio():
         
         # Step 5: Convert response to speech
         try:
-            response_audio_path = os.path.join(RESPONSE_FOLDER, f"response_{uuid.uuid4()}.wav")
+            response_audio_path = os.path.join(RESPONSE_FOLDER, f"response_{uuid.uuid4()}.mp3")
             text_to_voice(response_audio_path, response_text, elevenlabs_client)
             logger.debug(f"Generated audio response at {response_audio_path}")
         except Exception as e:

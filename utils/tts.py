@@ -24,13 +24,20 @@ def text_to_voice(speech_file_path: str, text_to_convert: str, client) -> str:
         if not voices or not voices.voices:
             raise Exception("No voices available with your ElevenLabs account")
             
-        default_voice = voices.voices[0].name
-        logger.debug(f"Using voice: {default_voice}")
+        # Get the voice ID of the first voice (using ID is more reliable)
+        default_voice_id = voices.voices[0].voice_id
+        default_voice_name = voices.voices[0].name
+        logger.debug(f"Using voice: {default_voice_name} (ID: {default_voice_id})")
+        
+        # Make sure the output file has .mp3 extension since that's what ElevenLabs returns
+        if not speech_file_path.endswith('.mp3'):
+            speech_file_path = speech_file_path.rsplit('.', 1)[0] + '.mp3'
         
         audio = client.generate(
             text=text_to_convert,
-            voice=default_voice,
-            model="eleven_flash_v2"
+            voice=default_voice_id,  # Use the voice ID instead of name
+            model="eleven_flash_v2",
+            output_format="mp3_44100_128"  # Using a specific supported format
         )
         
         # Save the audio to a file
