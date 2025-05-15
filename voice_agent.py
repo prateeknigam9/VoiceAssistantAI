@@ -122,7 +122,7 @@ def generate_search_terms(query: str) -> GovernmentTerm:
                 {"role": "user", "content": prompt}
             ],
             temperature=0.2,
-            max_tokens=50
+            max_tokens=50,
         )
         
         # Extract the search term from the response
@@ -279,7 +279,7 @@ def generate_response(conversation_history: List[Dict[str, Any]], extracted_cont
         response = groq_client.chat.completions.create(
             model="llama3-70b-8192",
             messages=messages,
-            temperature=0.7,
+            temperature=0,
             max_tokens=1000
         )
         
@@ -400,7 +400,7 @@ def main():
                 print(f"  Found information from {extracted_content.count('Source:') or 0} sources")
                 
                 print("\n[4/5] Generating response...")
-                response_text = generate_response(conversation_history, extracted_content)
+                response_text = generate_response(conversation_history[-5:], extracted_content)
                 print(f"  Response: \"{response_text}\"")
                 
                 # Add assistant response to conversation history
